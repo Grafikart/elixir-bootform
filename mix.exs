@@ -4,9 +4,11 @@ defmodule Bootform.Mixfile do
   def project do
     [app: :bootform,
      version: "0.1.0",
-     elixir: "~> 1.2",
+     elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
@@ -32,5 +34,20 @@ defmodule Bootform.Mixfile do
       {:phoenix, "~> 1.2"},
       {:ecto, "~> 2.0"}
     ]
+  end
+
+  defp description do
+    """
+    Create bootstrap 4 friendly forms with ease. Build on tope of Phoenix.Form
+    """
+  end
+
+  defp package do
+    [# These are the default files included in the package
+     name: :bootform,
+     maintainers: ["Jonathan Boyer"],
+     licenses: ["Apache 2.0"],
+     links: %{"GitHub" => "https://github.com/Grafikart/elixir-bootform",
+              "Docs" => "https://hexdocs.pm/bootform/"}]
   end
 end

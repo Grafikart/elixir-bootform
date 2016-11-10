@@ -8,23 +8,41 @@ defmodule BootformTest do
     {:ok, [form: form]}
   end
 
-  test "generate input", %{form: form} do
-    input = Bootform.input(form, :email, "Your email")
-      |> Phoenix.HTML.Safe.to_iodata
-      |> IO.iodata_to_binary
+  test ".input", %{form: form} do
     expect = """
     <div class="form-group">
         <label for="helloEmail">Your email</label>
         <input class="form-control" id="helloEmail" name="hello[email]" type="text">
     </div>
     """
-    assert cleaned(input) == cleaned(expect)
+    Bootform.input(form, :email, "Your email") |> similar(expect)
   end
 
-  test "textarea" do
+  test ".input without label", %{form: form} do
+    expect = """
+    <div class="form-group">
+        <input class="form-control" id="helloEmail" name="hello[email]" type="text">
+    </div>
+    """
+    Bootform.input(form, :email) |> similar(expect)
+  end
+
+  test "specify input type", %{form: form} do
+    expect = """
+    <div class="form-group">
+        <label for="helloEmail">Your email</label>
+        <input class="form-control" id="helloEmail" name="hello[email]" required="required" type="email">
+    </div>
+    """
+    Bootform.input(form, :email, "Your email", type: :email, required: true)
+      |> similar(expect)
+  end
+
+  test ".textarea" do
     form = Phoenix.HTML.Form.__struct__(%{
       name: "hello",
-      data: %{email: "demo@demo.fr"}
+      data: %{email: "demo@demo.fr"},
+      errors: []
     })
     {:safe, input} = Bootform.textarea(form, :email, "Your email")
     expect = """
@@ -38,27 +56,66 @@ defmodule BootformTest do
     assert cleaned(input) == cleaned(expect)
   end
 
-  test "errors" do
+  test "display errors correctly" do
     expect = """
-    <div class="form-group has-error">
+    <div class="form-group has-danger">
         <label for="helloEmail">Your email</label>
         <input class="form-control" id="helloEmail" name="hello[email]" type="text">
-        <span class="help-block">can&#39;t be blank</span>
+        <div class="form-control-feedback">can&#39;t be blank</div>
     </div>
     """
     form = Phoenix.HTML.Form.__struct__(%{
       name: "hello",
       data: %{},
-      source: %{errors: [email: {"can't be blank", []}]}
+      errors: [email: {"can't be blank", []}]
     })
     Bootform.input(form, :email, "Your email") |> similar(expect)
   end
 
   test ".submit" do
     expect = """
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
     """
     Bootform.submit("Submit") |> similar(expect)
+  end
+
+  test ".checkbox" do
+    form = Phoenix.HTML.Form.__struct__(%{
+      name: "hello",
+      data: %{cgu: true}
+    })
+    expect = """
+    <div class="form-check">
+        <label class="form-check-label">
+          <input name="hello[cgu]" type="hidden" value="false">
+          <input checked="checked" class="form-check-input" id="helloCgu" name="hello[cgu]" type="checkbox" value="true">
+          Check me out
+        </label>
+      </div>
+    """
+    Bootform.checkbox(form, :cgu, "Check me out")
+      |> similar(expect)
+  end
+
+  test ".checkbox with errors" do
+    form = Phoenix.HTML.Form.__struct__(%{
+      name: "hello",
+      data: %{cgu: true},
+      errors: [cgu: {"Confirm CGU pls", []}]
+    })
+    expect = """
+    <div class="form-check has-danger">
+        <label class="form-check-label">
+          <input name="hello[cgu]" type="hidden" value="false">
+          <input checked="checked" class="form-check-input" id="helloCgu" name="hello[cgu]" type="checkbox" value="true">
+          Check me out
+        </label>
+      </div>
+    """
+    Bootform.checkbox(form, :cgu, "Check me out")
+      |> similar(expect)
   end
 
   defp cleaned(string) when is_binary(string) do
