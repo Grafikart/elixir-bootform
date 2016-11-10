@@ -1,6 +1,6 @@
 # Bootform
 
-**TODO: Add description**
+![](https://travis-ci.org/Grafikart/elixir-bootform.svg)
 
 ## Installation
 

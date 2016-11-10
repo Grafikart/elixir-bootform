@@ -39,12 +39,6 @@ defmodule BootformTest do
   end
 
   test "errors" do
-    form = Phoenix.HTML.Form.__struct__(%{
-      name: "hello",
-      data: %{},
-      source: %{errors: [email: {"can't be blank", []}]}
-    })
-    {:safe, input} = Bootform.input(form, :email, "Your email")
     expect = """
     <div class="form-group has-error">
         <label for="helloEmail">Your email</label>
@@ -52,15 +46,19 @@ defmodule BootformTest do
         <span class="help-block">can&#39;t be blank</span>
     </div>
     """
-    assert cleaned(input) == cleaned(expect)
+    form = Phoenix.HTML.Form.__struct__(%{
+      name: "hello",
+      data: %{},
+      source: %{errors: [email: {"can't be blank", []}]}
+    })
+    Bootform.input(form, :email, "Your email") |> similar(expect)
   end
 
   test ".submit" do
     expect = """
     <button class="btn btn-primary" type="submit">Submit</button>
     """
-    Bootform.submit("Submit")
-      |> similar expect
+    Bootform.submit("Submit") |> similar(expect)
   end
 
   defp cleaned(string) when is_binary(string) do
