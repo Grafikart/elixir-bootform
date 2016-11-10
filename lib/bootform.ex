@@ -1,4 +1,18 @@
 defmodule Bootform do
+  @moduledoc ~S"""
+    Bootform is inspired by simple_form from rails and allow an easier way to render form
+    using bootstrap 4 semantic.
+
+      input form, :email, "Your email", type: :email
+
+    will render 
+
+      <div class="form-group has-danger">
+          <label for="helloEmail">Your email</label>
+          <input class="form-control" id="helloEmail" name="hello[email]" type="text">
+          <div class="form-control-feedback">can&#39;t be blank</div>
+      </div>
+  """
 
   alias Phoenix.HTML.Form
   alias Phoenix.HTML.Tag
@@ -13,12 +27,16 @@ defmodule Bootform do
   @doc """
   Render text input using bootstrap tags
 
-  ```
-  <div class="form-group">
-   <label for="exampleInputEmail1">Email address</label>
-   <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="off">
-  </div>
-  ```
+  ## Examples
+
+  You can use it this way
+
+    input form, :email, "Your email", type: :email
+
+  You can ommit label and options
+
+    input form, :email
+
   """
   @spec input(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
   def input(form, field, label \\ false, opts \\ []) do
@@ -37,7 +55,6 @@ defmodule Bootform do
 
   @doc """
   Render textarea input using bootstrap tags
-  ```
   """
   @spec textarea(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
   def textarea(form, field, label \\ false, opts \\ []) do
@@ -45,8 +62,7 @@ defmodule Bootform do
   end
 
   @doc """
-  Render a checkbox with label on the right
-  ```
+  Render a checkbox with label
   """
   @spec checkbox(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
   def checkbox(form, field, label \\ false, opts \\ []) do
@@ -68,7 +84,7 @@ defmodule Bootform do
   end
 
   @doc """
-    Render a submitr button
+    Render a submit button
   """
   @spec submit(String.t) :: String.t
   def submit(label) do
