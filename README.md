@@ -22,3 +22,31 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
 
+
+```
+%Phoenix.HTML.Form{
+    data: %Blogmvc.Comment{
+        __meta__: #Ecto.Schema.Metadata<:built, "comments">,
+        content: nil,
+        created: nil,
+        id: nil,
+        mail: nil,
+        post: #Ecto.Association.NotLoaded<association :post is not loaded>,
+        post_id: nil,
+        username: "John doe"
+    },
+    errors: [],
+    hidden: [],
+    id: "comment",
+    impl: Phoenix.HTML.FormData.Ecto.Changeset,
+    index: nil, name: "comment",
+    options: [method: "post"],
+    params: %{},
+    source: #Ecto.Changeset<
+        action: nil,
+        changes: %{},
+        errors: [mail: {"can't be blank", []}, content: {"can't be blank", []}],
+        data: #Blogmvc.Comment<>, valid?: false
+    >
+}
+```

@@ -29,7 +29,8 @@ defmodule Bootform.Mixfile do
   defp deps do
     [
       {:phoenix_html, "~> 2.7"},
-      {:phoenix, "~> 1.2"}
+      {:phoenix, "~> 1.2"},
+      {:ecto, "~> 2.0"}
     ]
   end
 end
