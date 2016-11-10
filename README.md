@@ -1,6 +1,7 @@
 # Bootform
 
-![](https://travis-ci.org/Grafikart/elixir-bootform.svg)
+[![](https://travis-ci.org/Grafikart/elixir-bootform.svg)](https://travis-ci.org/Grafikart/elixir-bootform)
+[![Hex.pm Version](http://img.shields.io/hexpm/v/bootform.svg)](https://hex.pm/packages/bootform)
 
 ## Installation
 
@@ -10,43 +11,17 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
     ```elixir
     def deps do
-      [{:bootform, "~> 0.1.0"}]
+      [{:bootform, "~> 0.1"}]
     end
     ```
 
-  2. Ensure `bootform` is started before your application:
+  2. Enjoy Bootform
 
     ```elixir
-    def application do
-      [applications: [:bootform]]
-    end
+      <%= form_for @comment, post_path(@conn, :index), fn f -> %>
+        <%= input f, :mail, false, type: :email, placeholder: "Your email" %>
+        <%= input f, :username, false, placeholder: "Your username" %>
+        <%= textarea f, :content, false, placeholder: "Your comment" %>
+        <%= Bootform.submit "Envoyer" %>
+      <% end %>
     ```
-
-
-```
-%Phoenix.HTML.Form{
-    data: %Blogmvc.Comment{
-        __meta__: #Ecto.Schema.Metadata<:built, "comments">,
-        content: nil,
-        created: nil,
-        id: nil,
-        mail: nil,
-        post: #Ecto.Association.NotLoaded<association :post is not loaded>,
-        post_id: nil,
-        username: "John doe"
-    },
-    errors: [],
-    hidden: [],
-    id: "comment",
-    impl: Phoenix.HTML.FormData.Ecto.Changeset,
-    index: nil, name: "comment",
-    options: [method: "post"],
-    params: %{},
-    source: #Ecto.Changeset<
-        action: nil,
-        changes: %{},
-        errors: [mail: {"can't be blank", []}, content: {"can't be blank", []}],
-        data: #Blogmvc.Comment<>, valid?: false
-    >
-}
-```

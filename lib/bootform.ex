@@ -5,7 +5,7 @@ defmodule Bootform do
 
       input form, :email, "Your email", type: :email
 
-    will render 
+    will render
 
       <div class="form-group has-danger">
           <label for="helloEmail">Your email</label>
