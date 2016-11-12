@@ -31,40 +31,57 @@ defmodule Bootform do
 
   You can use it this way
 
-    input form, :email, "Your email", type: :email
+  ```
+  input form, :email, "Your email", type: :email
+  ```
 
   You can ommit label and options
 
-    input form, :email
-
+  ```
+  input form, :email
+  ```
   """
-  @spec input(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
-  def input(form, field, label \\ false, opts \\ []) do
+  @spec input(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: {:safe, String.t}
+  def input(form, field, label, opts) do
     id = AttributeHelper.id(form, field)
     wrap(form, field, label, []) do
       type = Keyword.get(opts, :type)
       opts = Keyword.delete(opts, :type)
+        |> Keyword.put_new(:id, id)
+        |> Keyword.put_new(:class, @input_class)
       case type do
-        :email -> Form.email_input(form, field, opts ++ [id: id, class: @input_class])
-        :textarea -> Form.textarea(form, field, opts ++ [id: id, class: "form-control"])
-        _ -> Form.text_input(form, field, opts ++ [id: id, class: @input_class])
+        :email -> Form.email_input(form, field, opts)
+        :textarea -> Form.textarea(form, field, opts)
+        _ -> Form.text_input(form, field, opts)
       end
 
     end
   end
 
+  def input(form, field, opts) when is_list(opts) do
+    input(form, field, false, opts)
+  end
+
+  def input(form, field, label) when is_binary(label) do
+    input(form, field, label, [])
+  end
+
+  def input(form, field) do
+    input(form, field, false, [])
+  end
+
   @doc """
   Render textarea input using bootstrap tags
   """
-  @spec textarea(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
+  @spec textarea(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: {:safe, String.t}
   def textarea(form, field, label \\ false, opts \\ []) do
-    input(form, field, label, opts ++ [type: :textarea])
+    input(form, field, label, [type: :textarea] ++ opts)
   end
 
   @doc """
   Render a checkbox with label
   """
-  @spec checkbox(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: String.t
+  @spec checkbox(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: {:safe, String.t}
   def checkbox(form, field, label \\ false, opts \\ []) do
     class = case Errors.has_error?(form, field) do
       true -> @wrapper_checkbox_class <> " " <> @error_class
@@ -86,7 +103,7 @@ defmodule Bootform do
   @doc """
     Render a submit button
   """
-  @spec submit(String.t) :: String.t
+  @spec submit(String.t) :: {:safe, String.t}
   def submit(label) do
     Tag.content_tag :div, class: @wrapper_class do
       Tag.content_tag :button, label, type: "submit", class: "btn btn-primary"

@@ -18,6 +18,16 @@ defmodule BootformTest do
     Bootform.input(form, :email, "Your email") |> similar(expect)
   end
 
+  test ".input support no label", %{form: form} do
+    expect = """
+    <div class="form-group">
+        <input class="form-control" id="helloEmail" name="hello[email]" type="text">
+    </div>
+    """
+    Bootform.input(form, :email) |> similar(expect)
+    Bootform.input(form, :email, class: "form-control") |> similar(expect)
+  end
+
   test ".input without label", %{form: form} do
     expect = """
     <div class="form-group">
