@@ -44,14 +44,17 @@ defmodule Bootform do
   @spec input(Phoenix.HTML.Form.t, Atom.t, String.t, List.t) :: {:safe, String.t}
   def input(form, field, label, opts) do
     id = AttributeHelper.id(form, field)
+    options = Keyword.get(opts, :options)
     wrap(form, field, label, []) do
-      type = Keyword.get(opts, :type)
+      type = if options do :select else Keyword.get(opts, :type) end
       opts = Keyword.delete(opts, :type)
+        |> Keyword.delete(:options)
         |> Keyword.put_new(:id, id)
         |> Keyword.put_new(:class, @input_class)
       case type do
         :email -> Form.email_input(form, field, opts)
         :textarea -> Form.textarea(form, field, opts)
+        :select -> Form.select(form, field, options, opts)
         _ -> Form.text_input(form, field, opts)
       end
 

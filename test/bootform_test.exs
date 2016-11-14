@@ -37,7 +37,7 @@ defmodule BootformTest do
     Bootform.input(form, :email) |> similar(expect)
   end
 
-  test "specify input type", %{form: form} do
+  test ".input specify input type", %{form: form} do
     expect = """
     <div class="form-group">
         <label for="helloEmail">Your email</label>
@@ -46,6 +46,19 @@ defmodule BootformTest do
     """
     Bootform.input(form, :email, "Your email", type: :email, required: true)
       |> similar(expect)
+  end
+
+  test ".input with options", %{form: form} do
+    expect = """
+    <div class="form-group">
+        <label for="helloEmail">Your email</label>
+        <select class="form-control" id="helloEmail" name="hello[email]">
+          <option value="1">a</option>
+          <option value="3">b</option>
+        </select>
+    </div>
+    """
+    Bootform.input(form, :email, "Your email", options: [a: 1, b: 3]) |> similar(expect)
   end
 
   test ".textarea" do
