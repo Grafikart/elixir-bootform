@@ -42,10 +42,21 @@ defmodule Bootform.Errors do
     ...> })
     ...> Bootform.Errors.get_error(form, :username)
     nil
+
+    iex> form = Phoenix.HTML.Form.__struct__(%{
+    ...>   errors: [email: {"should be at least %{count} character(s)", [count: 4]}]
+    ...> })
+    ...> Bootform.Errors.get_error(form, :email)
+    "should be at least 4 character(s)"
   """
   def get_error(form, field) do
     case has_error?(form, field) do
-      true -> form.errors[field] |> elem(0)
+      true -> 
+        msg = form.errors[field] |> elem(0)
+        opts = form.errors[field] |> elem(1)
+        Enum.reduce(opts, msg, fn {key, value}, _acc ->
+         String.replace(msg, "%{#{key}}", to_string(value))
+        end)
       _ -> nil
     end
   end

@@ -141,6 +141,22 @@ defmodule BootformTest do
       |> similar(expect)
   end
 
+  test "display errors correctly with params" do
+    expect = """
+    <div class="form-group has-danger">
+        <label for="helloUsername">Your username</label>
+        <input class="form-control" id="helloUsername" name="hello[username]" type="text">
+        <div class="form-control-feedback">should be at least 4 character(s)</div>
+    </div>
+    """
+    form = Phoenix.HTML.Form.__struct__(%{
+      name: "hello",
+      data: %{},
+      errors: [username: {"should be at least %{count} character(s)", [count: 4]}]
+    })
+    Bootform.input(form, :username, "Your username") |> similar(expect)
+  end
+
   defp cleaned(string) when is_binary(string) do
     string |> String.replace("\n", "") |> String.replace("  ", "")
   end
