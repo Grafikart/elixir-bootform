@@ -48,6 +48,17 @@ defmodule BootformTest do
       |> similar(expect)
   end
 
+  test ".input with type password", %{form: form} do
+    expect = """
+    <div class="form-group">
+        <label class="form-control-label" for="helloPassword">Your password</label>
+        <input class="form-control" id="helloPassword" name="hello[password]" type="password">
+    </div>
+    """
+    Bootform.input(form, :password, "Your password", type: :password)
+      |> similar(expect)
+  end
+
   test ".input with options", %{form: form} do
     expect = """
     <div class="form-group">
