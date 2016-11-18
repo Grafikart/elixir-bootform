@@ -11,7 +11,7 @@ defmodule BootformTest do
   test ".input", %{form: form} do
     expect = """
     <div class="form-group">
-        <label for="helloEmail">Your email</label>
+        <label class="form-control-label" for="helloEmail">Your email</label>
         <input class="form-control" id="helloEmail" name="hello[email]" type="text">
     </div>
     """
@@ -40,7 +40,7 @@ defmodule BootformTest do
   test ".input specify input type", %{form: form} do
     expect = """
     <div class="form-group">
-        <label for="helloEmail">Your email</label>
+        <label class="form-control-label" for="helloEmail">Your email</label>
         <input class="form-control" id="helloEmail" name="hello[email]" required="required" type="email">
     </div>
     """
@@ -51,7 +51,7 @@ defmodule BootformTest do
   test ".input with options", %{form: form} do
     expect = """
     <div class="form-group">
-        <label for="helloEmail">Your email</label>
+        <label class="form-control-label" for="helloEmail">Your email</label>
         <select class="form-control" id="helloEmail" name="hello[email]">
           <option value="1">a</option>
           <option value="3">b</option>
@@ -70,7 +70,7 @@ defmodule BootformTest do
     {:safe, input} = Bootform.textarea(form, :email, "Your email")
     expect = """
     <div class="form-group">
-        <label for="helloEmail">Your email</label>
+        <label class="form-control-label" for="helloEmail">Your email</label>
         <textarea class="form-control" id="helloEmail" name="hello[email]">
           demo@demo.fr
         </textarea>
@@ -82,7 +82,7 @@ defmodule BootformTest do
   test "display errors correctly" do
     expect = """
     <div class="form-group has-danger">
-        <label for="helloEmail">Your email</label>
+        <label class="form-control-label" for="helloEmail">Your email</label>
         <input class="form-control" id="helloEmail" name="hello[email]" type="text">
         <div class="form-control-feedback">can&#39;t be blank</div>
     </div>

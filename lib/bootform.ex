@@ -23,6 +23,7 @@ defmodule Bootform do
   @wrapper_checkbox_class "form-check"
   @error_class "has-danger"
   @input_class "form-control"
+  @label_class "form-control-label"
 
   @doc """
   Render text input using bootstrap tags
@@ -129,7 +130,7 @@ defmodule Bootform do
     end
     Tag.content_tag(:div, opts) do
       [
-        if label !== false do Tag.content_tag(:label, label, for: id) else "" end,
+        if label !== false do Tag.content_tag(:label, label, class: @label_class, for: id) else "" end,
         block,
         help
       ]
