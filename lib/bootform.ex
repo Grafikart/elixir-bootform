@@ -23,6 +23,7 @@ defmodule Bootform do
   @wrapper_checkbox_class "form-check"
   @error_class "has-danger"
   @input_class "form-control"
+  @input_error_class "form-control-danger"
   @label_class "form-control-label"
 
   @doc """
@@ -48,10 +49,15 @@ defmodule Bootform do
     options = Keyword.get(opts, :options)
     wrap(form, field, label, []) do
       type = if options do :select else Keyword.get(opts, :type) end
+      input_class = if Errors.has_error?(form, field) do 
+        @input_class <> " " <> @input_error_class
+      else
+        @input_class
+      end
       opts = Keyword.delete(opts, :type)
         |> Keyword.delete(:options)
         |> Keyword.put_new(:id, id)
-        |> Keyword.put_new(:class, @input_class)
+        |> Keyword.put_new(:class, input_class)
       case type do
         :email -> Form.email_input(form, field, opts)
         :textarea -> Form.textarea(form, field, opts)

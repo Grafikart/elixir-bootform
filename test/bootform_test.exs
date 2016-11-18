@@ -83,7 +83,7 @@ defmodule BootformTest do
     expect = """
     <div class="form-group has-danger">
         <label class="form-control-label" for="helloEmail">Your email</label>
-        <input class="form-control" id="helloEmail" name="hello[email]" type="text">
+        <input class="form-control form-control-danger" id="helloEmail" name="hello[email]" type="text">
         <div class="form-control-feedback">can&#39;t be blank</div>
     </div>
     """
